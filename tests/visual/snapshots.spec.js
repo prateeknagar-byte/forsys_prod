@@ -2,14 +2,12 @@ import { test, expect } from '@playwright/test';
 
 // ─── VISUAL SNAPSHOTS — ABOVE FOLD (nav + hero) ───────────────────────────────
 // Snapshots the viewport only — not the full page. Captures nav + hero section.
-// Focused: one representative page per distinct layout template.
-// Stable: no scroll-fade cards, no dynamic below-fold content, no full-page noise.
+// 78 pages × 3 viewports (Desktop 1280px, Tablet 1024px, Mobile 375px) = 234 tests.
+// Stable: animations frozen, scrollbar hidden, JS timers cleared, slideshow reset to slide 0.
 //
 // First run:  npx playwright test tests/visual --update-snapshots  (generates baselines)
 // Subsequent: npx playwright test tests/visual                     (compares against baselines)
 // After intentional redesign: re-run with --update-snapshots and commit the new PNGs.
-//
-// Tablet skipped — covered by Desktop + Mobile.
 
 async function prepPage(page) {
   await page.addStyleTag({
@@ -23,6 +21,16 @@ async function prepPage(page) {
       ::-webkit-scrollbar { display: none !important; }
       html { scrollbar-width: none !important; }
     `,
+  });
+  // Stop JS-driven slideshows and reset to slide 0
+  await page.evaluate(() => {
+    const high = setTimeout(() => {}, 0);
+    for (let i = 0; i <= high; i++) clearTimeout(i);
+    const highI = setInterval(() => {}, 99999);
+    for (let i = 0; i <= highI; i++) clearInterval(i);
+    // Reset hero slideshow to first slide
+    const firstDot = document.querySelector('.slide-dot[data-idx="0"]');
+    if (firstDot) firstDot.click();
   });
 }
 
@@ -131,10 +139,6 @@ const PAGES = [
 ];
 
 test.describe('Visual Snapshots', () => {
-  test.beforeEach(async ({}, testInfo) => {
-    test.skip(testInfo.project.name === 'Tablet', 'Tablet skipped — covered by Desktop + Mobile');
-  });
-
   for (const { name, url } of PAGES) {
     test(name, async ({ page }) => {
       await page.goto(url, { waitUntil: 'load' });

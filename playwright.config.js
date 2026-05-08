@@ -2,8 +2,8 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-  retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 4 : undefined,
+  retries: process.env.CI ? 3 : 0,
+  workers: process.env.CI ? 6 : undefined,
 
   reporter: [
     ['html', { outputFolder: 'playwright-report', open: 'never' }],
