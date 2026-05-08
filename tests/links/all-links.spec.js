@@ -7,7 +7,7 @@ import path from 'path';
 // with HTTP 200. Catches deleted, renamed, or misconfigured pages.
 // Excludes: embed/ (has its own smoke test), forsys-website-new-main/ (not live),
 // node_modules/, playwright-report/, test-results/, assets/.
-// Desktop-only — status codes are viewport-independent.
+// Runs on all 3 viewports — confirms pages serve correctly on Desktop, Tablet, Mobile.
 
 const EXCLUDE = new Set(['embed', 'forsys-website-new-main', 'node_modules', 'playwright-report', 'test-results', 'assets']);
 const ROOT = process.cwd();
@@ -29,10 +29,6 @@ function collectPages(dir, base = '') {
 const PAGES = collectPages(ROOT);
 
 test.describe('All Pages — HTTP 200', () => {
-  test.beforeEach(async ({}, testInfo) => {
-    test.skip(testInfo.project.name !== 'Desktop', 'Desktop-only');
-  });
-
   for (const url of PAGES) {
     test(url, async ({ page }) => {
       const response = await page.goto(url, { waitUntil: 'domcontentloaded' });
