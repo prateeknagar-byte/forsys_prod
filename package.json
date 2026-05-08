@@ -1,0 +1,13 @@
+{
+  "name": "forsys-production",
+  "version": "1.0.0",
+  "description": "Forsys website — Playwright test suite",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0"
+  }
+}
