@@ -1,0 +1,2109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forsys Website — Test Suite Complete Documentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+    :root {
+      --purple: #6B48FF;
+      --purple-light: #ede9ff;
+      --teal: #00B4D8;
+      --dark: #0D0D2B;
+      --text: #1a1a3e;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #f9f9ff;
+      --white: #ffffff;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --code-bg: #f3f4f6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--text);
+      background: var(--white);
+    }
+
+    /* ── Cover Page ── */
+    .cover {
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0D0D2B 0%, #1a1050 50%, #2d1b8e 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 80px;
+      page-break-after: always;
+    }
+
+    .cover-badge {
+      background: rgba(107, 72, 255, 0.3);
+      border: 1px solid rgba(107, 72, 255, 0.6);
+      color: #c4b5fd;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 100px;
+      margin-bottom: 32px;
+    }
+
+    .cover h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 56px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.15;
+      margin-bottom: 24px;
+      max-width: 700px;
+    }
+
+    .cover h1 span {
+      background: linear-gradient(90deg, #6B48FF, #00B4D8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .cover-sub {
+      font-size: 18px;
+      color: rgba(255,255,255,0.65);
+      max-width: 560px;
+      margin-bottom: 56px;
+      line-height: 1.7;
+    }
+
+    .cover-meta {
+      display: flex;
+      gap: 48px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 36px;
+      width: 100%;
+      max-width: 700px;
+    }
+
+    .cover-meta-item label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 4px;
+    }
+
+    .cover-meta-item span {
+      font-size: 15px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+    }
+
+    /* ── Layout ── */
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px 48px;
+    }
+
+    /* ── Table of Contents ── */
+    .toc-page {
+      page-break-after: always;
+    }
+
+    .toc-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 40px;
+      padding-bottom: 16px;
+      border-bottom: 3px solid var(--purple);
+    }
+
+    .toc-section {
+      margin-bottom: 8px;
+    }
+
+    .toc-section a {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      text-decoration: none;
+      color: var(--text);
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--border);
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .toc-section a:hover { color: var(--purple); }
+
+    .toc-section a .toc-num {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .toc-sub {
+      padding-left: 20px;
+    }
+
+    .toc-sub a {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    /* ── Section Headers ── */
+    .section-header {
+      margin-top: 64px;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .section-num {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 8px;
+    }
+
+    .section-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .section-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-top: 40px;
+      margin-bottom: 16px;
+    }
+
+    h3.sub {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-top: 36px;
+      margin-bottom: 12px;
+    }
+
+    h4.sub2 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--purple);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 28px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    /* ── Callout Boxes ── */
+    .callout {
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin: 24px 0;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .callout-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .callout-body { flex: 1; }
+
+    .callout-body strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .callout-body p { margin: 0; font-size: 14px; line-height: 1.65; }
+
+    .callout.info { background: #eff6ff; border-left: 4px solid #3b82f6; }
+    .callout.info .callout-icon { color: #3b82f6; }
+    .callout.success { background: #f0fdf4; border-left: 4px solid var(--success); }
+    .callout.success .callout-icon { color: var(--success); }
+    .callout.warning { background: #fffbeb; border-left: 4px solid var(--warning); }
+    .callout.warning .callout-icon { color: var(--warning); }
+    .callout.purple { background: var(--purple-light); border-left: 4px solid var(--purple); }
+    .callout.purple .callout-icon { color: var(--purple); }
+
+    /* ── Tables ── */
+    .table-wrap {
+      overflow-x: auto;
+      margin: 24px 0;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    thead tr {
+      background: var(--dark);
+    }
+
+    thead th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody tr:nth-child(even) { background: var(--bg); }
+
+    tbody td {
+      padding: 11px 16px;
+      color: var(--text);
+      vertical-align: top;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-green { background: #dcfce7; color: #166534; }
+    .badge-red { background: #fee2e2; color: #991b1b; }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    .badge-purple { background: var(--purple-light); color: var(--purple); }
+    .badge-gray { background: #f3f4f6; color: #374151; }
+    .badge-orange { background: #ffedd5; color: #9a3412; }
+
+    /* ── Code Blocks ── */
+    .code-block {
+      background: #1e1e2e;
+      border-radius: 10px;
+      padding: 24px;
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+
+    .code-block-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 12px;
+    }
+
+    .code-block pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: #cdd6f4;
+      line-height: 1.65;
+      white-space: pre;
+    }
+
+    .code-block .kw { color: #cba6f7; }
+    .code-block .str { color: #a6e3a1; }
+    .code-block .cm { color: #585b70; font-style: italic; }
+    .code-block .fn { color: #89b4fa; }
+    .code-block .num { color: #fab387; }
+    .code-block .key { color: #89dceb; }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      background: var(--code-bg);
+      padding: 2px 7px;
+      border-radius: 5px;
+      color: #b45309;
+    }
+
+    /* ── Stats Grid ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 28px 0;
+    }
+
+    .stat-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-card .num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 36px;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--purple), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+    }
+
+    .stat-card .label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* ── Flow Diagram ── */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin: 28px 0;
+      flex-wrap: wrap;
+    }
+
+    .flow-step {
+      background: var(--purple-light);
+      border: 1px solid var(--purple);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--purple);
+      text-align: center;
+      min-width: 130px;
+    }
+
+    .flow-step small {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .flow-arrow {
+      font-size: 20px;
+      color: var(--muted);
+      padding: 0 8px;
+    }
+
+    /* ── File Tree ── */
+    .file-tree {
+      background: #1e1e2e;
+      border-radius: 10px;
+      padding: 24px;
+      margin: 20px 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 2;
+    }
+
+    .file-tree .dir { color: #89b4fa; font-weight: 500; }
+    .file-tree .file { color: #cdd6f4; }
+    .file-tree .comment { color: #585b70; font-style: italic; }
+    .file-tree .highlight { color: #a6e3a1; font-weight: 600; }
+
+    /* ── Page Break ── */
+    .page-break { page-break-before: always; }
+
+    /* ── Numbered List ── */
+    ol.detailed {
+      padding-left: 24px;
+    }
+
+    ol.detailed li {
+      margin-bottom: 16px;
+      line-height: 1.75;
+    }
+
+    ol.detailed li strong {
+      color: var(--dark);
+    }
+
+    ul.detailed {
+      padding-left: 24px;
+    }
+
+    ul.detailed li {
+      margin-bottom: 10px;
+      line-height: 1.75;
+    }
+
+    ul.detailed li::marker { color: var(--purple); }
+
+    /* ── Divider ── */
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 40px 0;
+    }
+
+    /* ── Two Col ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 20px 0;
+    }
+
+    .col-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .col-card h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .col-card ul {
+      padding-left: 16px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .col-card ul li { margin-bottom: 6px; }
+
+    /* ── Print ── */
+    @media print {
+      .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .stats-grid { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      thead tr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .code-block { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .callout { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════ COVER PAGE -->
+<div class="cover">
+  <div class="cover-badge">Internal Technical Documentation</div>
+  <h1>Forsys Website<br><span>Test Suite</span><br>Documentation</h1>
+  <p class="cover-sub">
+    Complete reference for the Playwright visual regression test suite — covering architecture,
+    configuration, page coverage, CI/CD pipeline, branch protection, baseline management,
+    maintenance procedures, and troubleshooting.
+  </p>
+  <div class="cover-meta">
+    <div class="cover-meta-item">
+      <label>Project</label>
+      <span>forsys-production</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>Test Tool</label>
+      <span>Playwright v1.52</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>Total Tests</label>
+      <span>156</span>
+    </div>
+    <div class="cover-meta-item">
+      <label>Date</label>
+      <span>May 2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ TOC -->
+<div class="page toc-page">
+  <div class="toc-title">Table of Contents</div>
+
+  <div class="toc-section"><a href="#s1">1. Project Background &amp; Why We Test <span class="toc-num">3</span></a></div>
+  <div class="toc-section"><a href="#s2">2. What is Visual Snapshot Testing <span class="toc-num">4</span></a></div>
+  <div class="toc-section toc-sub">
+    <a href="#s2a">2.1 How it works step by step <span class="toc-num">4</span></a>
+    <a href="#s2b">2.2 What it catches vs what it does not catch <span class="toc-num">5</span></a>
+    <a href="#s2c">2.3 Why Playwright was chosen <span class="toc-num">5</span></a>
+  </div>
+  <div class="toc-section"><a href="#s3">3. Scope — Why Viewport-Only Screenshots <span class="toc-num">6</span></a></div>
+  <div class="toc-section"><a href="#s4">4. Pages Covered — All 78 Pages <span class="toc-num">7</span></a></div>
+  <div class="toc-section"><a href="#s5">5. Viewports and Devices <span class="toc-num">9</span></a></div>
+  <div class="toc-section"><a href="#s6">6. Configuration Deep Dive <span class="toc-num">10</span></a></div>
+  <div class="toc-section toc-sub">
+    <a href="#s6a">6.1 playwright.config.js — every setting explained <span class="toc-num">10</span></a>
+    <a href="#s6b">6.2 The test file — snapshots.spec.js <span class="toc-num">12</span></a>
+    <a href="#s6c">6.3 prepPage() function — why it exists <span class="toc-num">13</span></a>
+  </div>
+  <div class="toc-section"><a href="#s7">7. Baseline PNG Management <span class="toc-num">14</span></a></div>
+  <div class="toc-section toc-sub">
+    <a href="#s7a">7.1 Where baselines are stored <span class="toc-num">14</span></a>
+    <a href="#s7b">7.2 Why CI generates baselines, not local machine <span class="toc-num">14</span></a>
+    <a href="#s7c">7.3 When to regenerate baselines <span class="toc-num">15</span></a>
+  </div>
+  <div class="toc-section"><a href="#s8">8. CI/CD Pipeline <span class="toc-num">16</span></a></div>
+  <div class="toc-section toc-sub">
+    <a href="#s8a">8.1 ci.yml — automatic on PR and push <span class="toc-num">16</span></a>
+    <a href="#s8b">8.2 update-snapshots.yml — manual baseline refresh <span class="toc-num">18</span></a>
+    <a href="#s8c">8.3 ftp-deploy-production.yml — deploy (untouched) <span class="toc-num">19</span></a>
+  </div>
+  <div class="toc-section"><a href="#s9">9. Branch Protection Rules <span class="toc-num">20</span></a></div>
+  <div class="toc-section"><a href="#s10">10. Day-to-Day Developer Workflow <span class="toc-num">22</span></a></div>
+  <div class="toc-section"><a href="#s11">11. Commands Reference <span class="toc-num">23</span></a></div>
+  <div class="toc-section"><a href="#s12">12. Troubleshooting Guide <span class="toc-num">24</span></a></div>
+  <div class="toc-section"><a href="#s13">13. File Structure <span class="toc-num">26</span></a></div>
+  <div class="toc-section"><a href="#s14">14. Performance &amp; Cost <span class="toc-num">27</span></a></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ S1 -->
+<div class="page page-break" id="s1">
+
+  <div class="section-header">
+    <div class="section-num">Section 01</div>
+    <h2>Project Background &amp; Why We Test</h2>
+  </div>
+
+  <p>
+    The Forsys production website is a pure static HTML/CSS/JavaScript site hosted via FTP. It has no
+    build pipeline, no component framework, and no automated tests. Any change to a shared CSS file —
+    for example, <code>base.css</code>, which controls the navigation bar, footer, and global tokens
+    — immediately affects every single page on the site.
+  </p>
+
+  <p>
+    Before this test suite existed, there was no safety net. A developer could change a color variable
+    or a layout rule in <code>base.css</code>, push to <code>main</code>, and the FTP deploy would
+    ship it to production seconds later — without any automated check confirming the change looked
+    correct on every page. The only way to catch a regression was manual visual inspection, which is
+    unreliable and time-consuming across 78 pages.
+  </p>
+
+  <h3 class="sub">The Core Problem</h3>
+
+  <p>
+    When you have a shared stylesheet, the blast radius of any change is the entire site. Consider
+    these realistic scenarios:
+  </p>
+
+  <ul class="detailed">
+    <li>A <code>padding</code> change in the nav causes the logo to be cut off on mobile screens.</li>
+    <li>A <code>z-index</code> change makes the mega-menu appear behind page content on certain pages.</li>
+    <li>A <code>font-weight</code> change in a headline class causes text to reflow and overlap the CTA button.</li>
+    <li>A hero background color token is updated and accidentally applied to a section it was not intended for.</li>
+    <li>A new page is pushed with a missing CSS import, causing it to render unstyled.</li>
+  </ul>
+
+  <p>
+    All of the above are invisible to a developer looking only at the file they edited. They require
+    looking at the live rendered output across all affected pages, at all screen sizes. Manual inspection
+    at that scale is not realistic.
+  </p>
+
+  <h3 class="sub">The Solution</h3>
+
+  <p>
+    A visual regression test suite that automatically screenshots every production page at every
+    screen size on every pull request, and blocks the merge if any screenshot differs unexpectedly
+    from the approved baseline. No regression can ship without being seen first.
+  </p>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="num">78</div><div class="label">Pages tested</div></div>
+    <div class="stat-card"><div class="num">2</div><div class="label">Viewport sizes</div></div>
+    <div class="stat-card"><div class="num">156</div><div class="label">Total test cases</div></div>
+    <div class="stat-card"><div class="num">~9m</div><div class="label">CI runtime</div></div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ S2 -->
+<div class="page page-break" id="s2">
+
+  <div class="section-header">
+    <div class="section-num">Section 02</div>
+    <h2>What is Visual Snapshot Testing</h2>
+  </div>
+
+  <p>
+    Visual snapshot testing is a technique where a test runner opens a page in a real browser,
+    takes a screenshot, and compares that screenshot pixel-by-pixel against a pre-approved
+    reference image called a <strong>baseline</strong>. If the current screenshot matches the
+    baseline within a defined tolerance, the test passes. If it differs beyond that tolerance,
+    the test fails and reports exactly which pixels changed.
+  </p>
+
+  <p>
+    The key word is <strong>regression</strong>. This type of testing is not about checking
+    whether a page is "correct" in an abstract sense — it is about detecting unintended
+    <em>changes</em> from a known-good state. The baseline represents the state you approved.
+    Any deviation is a signal that something changed.
+  </p>
+
+  <h3 class="sub" id="s2a">2.1 How it Works — Step by Step</h3>
+
+  <ol class="detailed">
+    <li>
+      <strong>Server starts.</strong> Playwright launches a local static file server
+      (<code>npx serve . --listen 3000</code>) that serves the entire production folder at
+      <code>http://localhost:3000</code>. This means every test runs against the exact same
+      files that are deployed to production — not a separate build or transformed output.
+    </li>
+    <li>
+      <strong>Browser opens the page.</strong> Playwright launches a headless Chromium browser
+      and navigates to the page URL. It waits until <code>waitUntil: 'load'</code> — meaning the
+      browser has fired the <code>load</code> event, which only happens after all stylesheets,
+      scripts, and images referenced in the HTML have finished downloading. This guarantees the
+      page is fully rendered before the screenshot is taken.
+    </li>
+    <li>
+      <strong>CSS stabilisation is injected.</strong> A JavaScript snippet injects a
+      <code>&lt;style&gt;</code> tag into the page that freezes all animations and transitions
+      to <code>0s</code> duration and hides the scrollbar. This ensures the screenshot is
+      deterministic — it looks the same every time regardless of timing or scroll state.
+    </li>
+    <li>
+      <strong>Screenshot is taken.</strong> Playwright captures the current browser viewport
+      (what is visible without scrolling) as a PNG image.
+    </li>
+    <li>
+      <strong>Comparison against baseline.</strong> The new screenshot is compared against the
+      stored baseline PNG. If no baseline exists yet (first run), Playwright saves the screenshot
+      as the new baseline. If a baseline exists, it computes the difference.
+    </li>
+    <li>
+      <strong>Pass or fail.</strong> If the percentage of differing pixels exceeds
+      <code>maxDiffPixelRatio: 0.07</code> (7% of all pixels), the test fails. Playwright
+      generates a diff image showing the exact regions that changed, highlighted in red.
+    </li>
+  </ol>
+
+  <h3 class="sub" id="s2b">2.2 What It Catches vs What It Does Not Catch</h3>
+
+  <div class="two-col">
+    <div class="col-card">
+      <h4>✅ Will catch</h4>
+      <ul>
+        <li>CSS color changes on nav, hero, or any above-fold element</li>
+        <li>Layout shifts — elements moving position</li>
+        <li>Text reflow caused by font or size changes</li>
+        <li>Missing CSS — page renders unstyled</li>
+        <li>Elements disappearing or appearing unexpectedly</li>
+        <li>Overlapping elements caused by z-index or overflow changes</li>
+        <li>Wrong logo, missing logo</li>
+        <li>Nav or hero broken on mobile layout</li>
+        <li>Viewport-level padding/margin changes</li>
+      </ul>
+    </div>
+    <div class="col-card">
+      <h4>❌ Will not catch</h4>
+      <ul>
+        <li>JavaScript interaction bugs (clicks, hover states, animations)</li>
+        <li>Form validation logic</li>
+        <li>Broken hyperlinks</li>
+        <li>Content changes below the visible fold</li>
+        <li>SEO metadata (title, description tags)</li>
+        <li>Accessibility tree (screen reader content)</li>
+        <li>API or backend responses</li>
+        <li>Page load performance</li>
+        <li>Console errors</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sub" id="s2c">2.3 Why Playwright Was Chosen</h3>
+
+  <p>
+    Several tools exist for visual snapshot testing (Percy, Chromatic, BackstopJS, Cypress).
+    Playwright was selected for the following reasons:
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Criterion</th>
+          <th>Playwright</th>
+          <th>Alternatives</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cost</td>
+          <td><span class="badge badge-green">Free</span> — fully open source</td>
+          <td>Percy/Chromatic charge per snapshot</td>
+        </tr>
+        <tr>
+          <td>Self-contained</td>
+          <td><span class="badge badge-green">Yes</span> — baselines stored in git, no external service</td>
+          <td>Percy/Chromatic require uploading to their cloud</td>
+        </tr>
+        <tr>
+          <td>Windows support</td>
+          <td><span class="badge badge-green">Yes</span> — first-class Windows CI runner support</td>
+          <td>BackstopJS has Docker complexity on Windows</td>
+        </tr>
+        <tr>
+          <td>Static site support</td>
+          <td><span class="badge badge-green">Built-in</span> — <code>webServer</code> config starts serve automatically</td>
+          <td>Manual server setup required for most tools</td>
+        </tr>
+        <tr>
+          <td>GitHub Actions integration</td>
+          <td><span class="badge badge-green">Native</span> — no extra plugins needed</td>
+          <td>Percy/Chromatic need token setup</td>
+        </tr>
+        <tr>
+          <td>Parallelism</td>
+          <td><span class="badge badge-green">Built-in</span> — configurable workers</td>
+          <td>Most tools charge more for parallelism</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ S3 -->
+<div class="page page-break" id="s3">
+
+  <div class="section-header">
+    <div class="section-num">Section 03</div>
+    <h2>Scope — Why Viewport-Only Screenshots</h2>
+  </div>
+
+  <p>
+    A critical design decision was made early: take <strong>viewport-only</strong> screenshots
+    (what is visible in the browser without scrolling) rather than <strong>full-page</strong>
+    screenshots (the entire page height). This was not a compromise — it was the correct
+    engineering choice, and here is the full reasoning.
+  </p>
+
+  <h3 class="sub">The Full-Page Problem</h3>
+
+  <p>
+    The Forsys website uses a scroll-fade animation pattern. Cards and sections below the fold
+    have <code>opacity: 0</code> and <code>transform: translateY(20px)</code> applied to them
+    by JavaScript as the page loads, using the browser's <code>IntersectionObserver</code> API.
+    These elements only become visible when the user scrolls them into the viewport.
+  </p>
+
+  <p>
+    When Playwright takes a full-page screenshot, it captures the entire page DOM without
+    scrolling. The <code>IntersectionObserver</code> never fires for below-fold elements because
+    they were never scrolled into view. The result is a screenshot where half the page content
+    is invisible — showing only blank spaces where the cards should be.
+  </p>
+
+  <p>
+    You could work around this by injecting CSS to force <code>opacity: 1</code> on all
+    elements, but this creates a different problem: the screenshot no longer reflects what a
+    real user sees. It becomes an artificial view of the page that does not match any real
+    rendering state.
+  </p>
+
+  <h3 class="sub">Why the Viewport Is the Right Target</h3>
+
+  <p>
+    The viewport — the nav and hero section — is the highest-risk, highest-value area to test
+    for several reasons:
+  </p>
+
+  <ul class="detailed">
+    <li>
+      <strong>It is the first thing every visitor sees.</strong> A broken nav or a misrendered
+      hero is a critical failure. A slightly shifted card three sections below the fold is minor.
+    </li>
+    <li>
+      <strong>It is driven entirely by shared CSS.</strong> The nav comes from <code>base.css</code>.
+      The hero section uses shared tokens and shared component classes. Any global CSS change
+      directly affects this region.
+    </li>
+    <li>
+      <strong>It is stable.</strong> The viewport content is static — no scroll-dependent
+      visibility, no lazy-loaded images entering frame, no intersection-triggered state changes.
+      This makes screenshots deterministic and comparable between runs.
+    </li>
+    <li>
+      <strong>It is the correct scope for regression detection.</strong> Each page has a distinct
+      hero design (different background, headline, CTA layout). If a CSS change breaks the hero
+      on a services page differently than on a solutions page, both will be caught because both
+      pages are in the test suite.
+    </li>
+  </ul>
+
+  <div class="callout purple">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Industry Principle — Narrowing the Scope</strong>
+      <p>
+        In professional QA, this approach is called "scoping the snapshot to the stable region."
+        You define what region of the UI is the authoritative test target — the part that is
+        both high-value and low-noise — and you snapshot only that. Full-page snapshots of
+        complex, dynamic pages create test suites that break constantly due to unrelated content
+        changes, producing alert fatigue where engineers start ignoring failures.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ S4 -->
+<div class="page page-break" id="s4">
+
+  <div class="section-header">
+    <div class="section-num">Section 04</div>
+    <h2>Pages Covered — All 78 Pages</h2>
+  </div>
+
+  <p>
+    Every production HTML page (excluding the <code>embed/</code> folder which contains iframe
+    embeds for case studies, <code>node_modules/</code>, and <code>playwright-report/</code>)
+    is included in the test suite. Pages are grouped by section to make failures easy to
+    interpret — a failure in <code>sol-sf-*</code> tests points immediately to a Salesforce
+    solutions page issue.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Group</th><th>Test Name</th><th>URL</th></tr>
+      </thead>
+      <tbody>
+        <tr><td rowspan="3"><span class="badge badge-purple">Main</span></td><td>homepage</td><td>/index.html</td></tr>
+        <tr><td>contact</td><td>/contact.html</td></tr>
+        <tr><td>privacy</td><td>/privacy.html</td></tr>
+
+        <tr><td rowspan="10"><span class="badge badge-blue">Services</span></td><td>services-revenue-lifecycle-strategy</td><td>/services/revenue-lifecycle-strategy.html</td></tr>
+        <tr><td>services-ai-agents-development</td><td>/services/ai-agents-development.html</td></tr>
+        <tr><td>services-ai-application-development</td><td>/services/ai-application-development.html</td></tr>
+        <tr><td>services-ai-enabled-managed-services</td><td>/services/ai-enabled-managed-services.html</td></tr>
+        <tr><td>services-autonomous-commerce</td><td>/services/autonomous-commerce.html</td></tr>
+        <tr><td>services-build-or-buy-strategy</td><td>/services/build-or-buy-strategy.html</td></tr>
+        <tr><td>services-data-migration</td><td>/services/data-migration.html</td></tr>
+        <tr><td>services-devops</td><td>/services/devops.html</td></tr>
+        <tr><td>services-enterprise-ai-strategy</td><td>/services/enterprise-ai-strategy.html</td></tr>
+        <tr><td>services-integrations</td><td>/services/integrations.html</td></tr>
+
+        <tr><td rowspan="5"><span class="badge badge-green">Sol — Salesforce</span></td><td>sol-sf-agentforce-crm</td><td>/solutions/salesforce/agentforce-crm.html</td></tr>
+        <tr><td>sol-sf-agentforce-commerce</td><td>/solutions/salesforce/agentforce-commerce.html</td></tr>
+        <tr><td>sol-sf-agentforce-platform</td><td>/solutions/salesforce/agentforce-platform.html</td></tr>
+        <tr><td>sol-sf-agentforce-revenue-management</td><td>/solutions/salesforce/agentforce-revenue-management.html</td></tr>
+        <tr><td>sol-sf-manufacturing-cloud</td><td>/solutions/salesforce/manufacturing-cloud.html</td></tr>
+
+        <tr><td rowspan="4"><span class="badge badge-green">Sol — Conga</span></td><td>sol-conga-contract-lifecycle-management</td><td>/solutions/conga/contract-lifecycle-management.html</td></tr>
+        <tr><td>sol-conga-revenue-and-commerce</td><td>/solutions/conga/revenue-and-commerce.html</td></tr>
+        <tr><td>sol-conga-smart-cpq</td><td>/solutions/conga/smart-cpq.html</td></tr>
+        <tr><td>sol-conga-smart-pricing-optimisation</td><td>/solutions/conga/smart-pricing-optimisation.html</td></tr>
+
+        <tr><td rowspan="4"><span class="badge badge-green">Sol — Oracle</span></td><td>sol-oracle-bpa-aistudio</td><td>/solutions/oracle/bpa-aistudio.html</td></tr>
+        <tr><td>sol-oracle-fusion-finance-accounting</td><td>/solutions/oracle/fusion-finance-accounting.html</td></tr>
+        <tr><td>sol-oracle-fusion-supply-chain</td><td>/solutions/oracle/fusion-supply-chain.html</td></tr>
+        <tr><td>sol-oracle-oic-paas</td><td>/solutions/oracle/oic-paas.html</td></tr>
+
+        <tr><td rowspan="6"><span class="badge badge-orange">Forsys Solutions</span></td><td>fs-revramp</td><td>/forsys-solutions/revramp.html</td></tr>
+        <tr><td>fs-lexishift</td><td>/forsys-solutions/lexishift.html</td></tr>
+        <tr><td>fs-revmove</td><td>/forsys-solutions/revmove.html</td></tr>
+        <tr><td>fs-mna-for-salesforce</td><td>/forsys-solutions/mna-for-salesforce.html</td></tr>
+        <tr><td>fs-aitest</td><td>/forsys-solutions/aitest.html</td></tr>
+        <tr><td>fs-ai-agents</td><td>/forsys-solutions/ai-agents.html</td></tr>
+
+        <tr><td rowspan="5"><span class="badge badge-purple">Industries</span></td><td>ind-hi-tech</td><td>/industries/hi-tech.html</td></tr>
+        <tr><td>ind-financial-services</td><td>/industries/financial-services.html</td></tr>
+        <tr><td>ind-healthcare-life-sciences</td><td>/industries/healthcare-life-sciences.html</td></tr>
+        <tr><td>ind-manufacturing</td><td>/industries/manufacturing.html</td></tr>
+        <tr><td>ind-saas-subscription</td><td>/industries/saas-subscription.html</td></tr>
+
+        <tr><td rowspan="9"><span class="badge badge-blue">Partnerships</span></td><td>partner-salesforce</td><td>/partnerships/salesforce.html</td></tr>
+        <tr><td>partner-conga</td><td>/partnerships/conga.html</td></tr>
+        <tr><td>partner-oracle</td><td>/partnerships/oracle.html</td></tr>
+        <tr><td>partner-rocketlane</td><td>/partnerships/rocketlane.html</td></tr>
+        <tr><td>partner-provus</td><td>/partnerships/provus.html</td></tr>
+        <tr><td>partner-m3ter</td><td>/partnerships/m3ter.html</td></tr>
+        <tr><td>partner-servicenow</td><td>/partnerships/servicenow.html</td></tr>
+        <tr><td>partner-flosum</td><td>/partnerships/flosum.html</td></tr>
+        <tr><td>partner-anthropic</td><td>/partnerships/anthropic.html</td></tr>
+
+        <tr><td rowspan="6"><span class="badge badge-gray">Resources</span></td><td>res-customer-stories</td><td>/resources/customer-stories.html</td></tr>
+        <tr><td>res-blogs</td><td>/resources/blogs.html</td></tr>
+        <tr><td>res-events</td><td>/resources/events.html</td></tr>
+        <tr><td>res-thought-leadership</td><td>/resources/thought-leadership.html</td></tr>
+        <tr><td>res-webinars-events</td><td>/resources/webinars-events.html</td></tr>
+        <tr><td>res-rev30-webinar</td><td>/resources/rev30-webinar-ondemand.html</td></tr>
+
+        <tr><td rowspan="9"><span class="badge badge-orange">Company</span></td><td>co-about</td><td>/company/about.html</td></tr>
+        <tr><td>co-careers</td><td>/company/careers.html</td></tr>
+        <tr><td>co-code-of-conduct</td><td>/company/code-of-conduct.html</td></tr>
+        <tr><td>co-contact</td><td>/company/contact.html</td></tr>
+        <tr><td>co-culture</td><td>/company/culture.html</td></tr>
+        <tr><td>co-leadership</td><td>/company/leadership.html</td></tr>
+        <tr><td>co-news-press</td><td>/company/news-press.html</td></tr>
+        <tr><td>co-privacy-policy</td><td>/company/privacy-policy.html</td></tr>
+        <tr><td>co-sustainability-policy</td><td>/company/sustainability-policy.html</td></tr>
+
+        <tr><td rowspan="11"><span class="badge badge-blue">Past Webinars</span></td><td>webinar-agentforce</td><td>/past-webinars/agentforce-webinar-ondemand.html</td></tr>
+        <tr><td>webinar-apprise-healthcare</td><td>/past-webinars/apprise-healthcare-ondemand.html</td></tr>
+        <tr><td>webinar-apprise-pricing</td><td>/past-webinars/apprise-pricing-ondemand.html</td></tr>
+        <tr><td>webinar-clm</td><td>/past-webinars/clm-webinar-ondemand.html</td></tr>
+        <tr><td>webinar-integrations</td><td>/past-webinars/integrations-webinar-ondemand.html</td></tr>
+        <tr><td>webinar-manufacturing</td><td>/past-webinars/manufacturing-webinar-ondemand.html</td></tr>
+        <tr><td>webinar-pharma</td><td>/past-webinars/pharma-webinar-ondemand.html</td></tr>
+        <tr><td>webinar-rev30</td><td>/past-webinars/rev30-webinar-ondemand.html</td></tr>
+        <tr><td>webinar-revramp-salesforce</td><td>/past-webinars/revramp-salesforce-webinar-ondemand.html</td></tr>
+        <tr><td>webinar-spiff</td><td>/past-webinars/spiff-webinar-ondemand.html</td></tr>
+        <tr><td>webinar-womens-day-2022</td><td>/past-webinars/womens-day-2022.html</td></tr>
+
+        <tr><td rowspan="6"><span class="badge badge-green">Lead Gen</span></td><td>lead-gen-propel26</td><td>/lead-gen/forsys-propel26.html</td></tr>
+        <tr><td>lead-gen-apprise-rsvp</td><td>/lead-gen/apprise-us-rsvp.html</td></tr>
+        <tr><td>lead-gen-awt</td><td>/lead-gen/awt-lead-gen-callout-form.html</td></tr>
+        <tr><td>lead-gen-conga</td><td>/lead-gen/conga-lead-gen-callout-form.html</td></tr>
+        <tr><td>lead-gen-oracle</td><td>/lead-gen/oracle-lead-gen-callout-form.html</td></tr>
+        <tr><td>lead-gen-salesforce</td><td>/lead-gen/salesforce-lead-gen-callout-form.html</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ S5 -->
+<div class="page page-break" id="s5">
+
+  <div class="section-header">
+    <div class="section-num">Section 05</div>
+    <h2>Viewports and Devices</h2>
+  </div>
+
+  <p>
+    Playwright is configured with three <strong>projects</strong>, each representing a viewport
+    size and device type. A project is essentially a named configuration that says "run all tests
+    in this browser with these dimensions." The same test file runs once per active project,
+    meaning 78 tests × 2 active projects = 156 total test runs.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Project Name</th><th>Device Profile</th><th>Resolution</th><th>Status</th><th>Reason</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Desktop</strong></td>
+          <td>Desktop Chrome</td>
+          <td>1280 × 720</td>
+          <td><span class="badge badge-green">Active</span></td>
+          <td>Standard laptop screen — the primary layout target for the site</td>
+        </tr>
+        <tr>
+          <td><strong>Tablet</strong></td>
+          <td>Desktop Chrome</td>
+          <td>1024 × 768</td>
+          <td><span class="badge badge-red">Skipped</span></td>
+          <td>Tablet layout is covered by Desktop + Mobile breakpoints. No unique design decisions at 1024px that aren't already caught by the adjacent viewports</td>
+        </tr>
+        <tr>
+          <td><strong>Mobile</strong></td>
+          <td>Pixel 5</td>
+          <td>375 × 812</td>
+          <td><span class="badge badge-green">Active</span></td>
+          <td>Represents the smallest common mobile screen. The mobile nav (hamburger), stacked hero, and responsive card layouts are all tested at this width</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub">Why 1280px for Desktop</h3>
+  <p>
+    1280px is the most common laptop screen width and the standard "desktop" breakpoint used in
+    the Forsys CSS design system (<code>≥1025px = desktop</code>). It is wide enough to show the
+    full nav, mega-menus, and hero layout without triggering any responsive overrides.
+  </p>
+
+  <h3 class="sub">Why 375px for Mobile</h3>
+  <p>
+    375px is the viewport width of an iPhone SE, iPhone 12/13/14, and similar small Android
+    devices. It represents the minimum viable mobile width. If the layout works at 375px, it
+    works on essentially all modern mobile devices. The Pixel 5 device profile also sets the
+    correct user-agent string so any browser detection JavaScript behaves as it would on a real
+    mobile device.
+  </p>
+
+  <h3 class="sub">Why Tablet is Skipped</h3>
+  <p>
+    The Forsys CSS uses three breakpoints: desktop (≥1025px), tablet (≤1024px), and mobile
+    (≤768px). The tablet breakpoint at 1024px sits between the Desktop and Mobile test
+    viewports. In practice, the layout at 1024px is a slight variation of desktop — the nav
+    switches to a hamburger menu but the content columns remain largely the same. Running
+    Tablet tests would add 78 more test cases but catch very few regressions that Desktop
+    and Mobile do not already catch. Skipping Tablet halves the test count without
+    meaningful reduction in coverage quality.
+  </p>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ</div>
+    <div class="callout-body">
+      <strong>Tablet can be re-enabled at any time</strong>
+      <p>
+        If the design ever introduces tablet-specific layouts that differ significantly from
+        both Desktop and Mobile, remove the <code>test.skip</code> line from the
+        <code>beforeEach</code> hook in <code>snapshots.spec.js</code> and regenerate baselines.
+        The project configuration for Tablet already exists in <code>playwright.config.js</code>.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ S6 -->
+<div class="page page-break" id="s6">
+
+  <div class="section-header">
+    <div class="section-num">Section 06</div>
+    <h2>Configuration Deep Dive</h2>
+  </div>
+
+  <h3 class="sub" id="s6a">6.1 playwright.config.js — Every Setting Explained</h3>
+
+  <div class="code-block">
+    <div class="code-block-label">playwright.config.js</div>
+    <pre><span class="kw">import</span> { defineConfig, devices } <span class="kw">from</span> <span class="str">'@playwright/test'</span>;
+
+<span class="kw">export default</span> defineConfig({
+  testDir: <span class="str">'./tests'</span>,           <span class="cm">// Where Playwright looks for test files</span>
+  retries: process.env.CI ? <span class="num">1</span> : <span class="num">0</span>,   <span class="cm">// 1 retry in CI, 0 locally</span>
+  workers: process.env.CI ? <span class="num">4</span> : undefined,  <span class="cm">// 4 parallel workers in CI</span>
+
+  reporter: [
+    [<span class="str">'html'</span>, { outputFolder: <span class="str">'playwright-report'</span>, open: <span class="str">'never'</span> }],
+    [<span class="str">'list'</span>]
+  ],
+
+  use: {
+    baseURL: <span class="str">'http://localhost:3000'</span>,
+    trace: <span class="str">'on-first-retry'</span>,
+    screenshot: <span class="str">'only-on-failure'</span>,
+  },
+
+  expect: {
+    toHaveScreenshot: {
+      maxDiffPixelRatio: <span class="num">0.07</span>,   <span class="cm">// 7% pixel diff tolerance</span>
+    },
+  },
+
+  webServer: {
+    command: <span class="str">'npx serve . --listen 3000'</span>,
+    url: <span class="str">'http://localhost:3000'</span>,
+    reuseExistingServer: !process.env.CI,
+    timeout: <span class="num">30000</span>,
+  },
+
+  projects: [...]
+});</pre>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Setting</th><th>Value</th><th>Detailed Explanation</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>testDir</code></td>
+          <td><code>./tests</code></td>
+          <td>Playwright recursively scans this directory for any file matching <code>*.spec.js</code>. All test files live under <code>tests/</code> so this catches everything including future test files added to subdirectories.</td>
+        </tr>
+        <tr>
+          <td><code>retries</code></td>
+          <td>CI: 1, Local: 0</td>
+          <td>On CI, a failed test gets one automatic retry before being marked as failed. This absorbs transient rendering glitches (occasional GPU or font rendering variance) without masking real failures. Locally, no retries so feedback is instant.</td>
+        </tr>
+        <tr>
+          <td><code>workers</code></td>
+          <td>CI: 4, Local: auto</td>
+          <td>Number of test workers running in parallel. 4 workers in CI means up to 4 tests run simultaneously, cutting the total CI time to roughly 25% of sequential time. Locally, <code>undefined</code> tells Playwright to use half the available CPU cores automatically.</td>
+        </tr>
+        <tr>
+          <td><code>reporter: html</code></td>
+          <td><code>open: 'never'</code></td>
+          <td>Generates a full HTML report with pass/fail summary, screenshots, diffs, and timings. <code>open: 'never'</code> prevents the browser from auto-opening the report (which would hang CI). The report is uploaded as a GitHub Actions artifact and available for 7 days.</td>
+        </tr>
+        <tr>
+          <td><code>reporter: list</code></td>
+          <td>—</td>
+          <td>Prints a real-time list of each test as it runs to the terminal. Useful for monitoring CI logs live.</td>
+        </tr>
+        <tr>
+          <td><code>baseURL</code></td>
+          <td><code>http://localhost:3000</code></td>
+          <td>All URLs in tests are relative (<code>/index.html</code>). Playwright prepends this base URL, so <code>/index.html</code> becomes <code>http://localhost:3000/index.html</code>.</td>
+        </tr>
+        <tr>
+          <td><code>trace</code></td>
+          <td><code>on-first-retry</code></td>
+          <td>Captures a full execution trace (network requests, DOM snapshots, screenshots at each action, console logs) on the retry run. If a test fails twice, the trace is available in the HTML report for deep debugging.</td>
+        </tr>
+        <tr>
+          <td><code>screenshot</code></td>
+          <td><code>only-on-failure</code></td>
+          <td>In addition to snapshot comparison screenshots, Playwright takes a "failure screenshot" when a test fails. This is separate from the diff — it shows the actual rendered state at the moment of failure.</td>
+        </tr>
+        <tr>
+          <td><code>maxDiffPixelRatio</code></td>
+          <td><code>0.07</code></td>
+          <td>Up to 7% of the total pixel count may differ before a test fails. A 1280×720 viewport has 921,600 pixels — 7% allows up to 64,512 pixels to differ. This threshold was calibrated by observing that font anti-aliasing differences between Windows 11 local and Windows Server CI caused ~3–5% pixel variance on text-heavy pages.</td>
+        </tr>
+        <tr>
+          <td><code>webServer.command</code></td>
+          <td><code>npx serve . --listen 3000</code></td>
+          <td>Starts a static file server from the project root before any tests run. <code>serve</code> is in <code>devDependencies</code> so <code>npm ci</code> installs it — it never needs to be downloaded on the fly during CI.</td>
+        </tr>
+        <tr>
+          <td><code>reuseExistingServer</code></td>
+          <td>!CI → true locally</td>
+          <td>Locally, if port 3000 is already in use (you started serve manually), Playwright reuses it instead of trying to start another instance. On CI, always starts fresh.</td>
+        </tr>
+        <tr>
+          <td><code>webServer.timeout</code></td>
+          <td>30000ms</td>
+          <td>Playwright waits up to 30 seconds for the server to respond before failing. This gives enough time for <code>serve</code> to start on CI even if the system is under load.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub" id="s6b">6.2 The Test File — snapshots.spec.js</h3>
+
+  <p>
+    The test file is intentionally simple. It does not contain any complex logic — just a loop
+    that generates one test per page. This is deliberate: visual snapshot tests should be
+    mechanical and predictable. The logic is in the configuration, not the test code.
+  </p>
+
+  <div class="code-block">
+    <div class="code-block-label">tests/visual/snapshots.spec.js — core loop</div>
+    <pre><span class="kw">for</span> (<span class="kw">const</span> { name, url } <span class="kw">of</span> PAGES) {
+  test(name, <span class="kw">async</span> ({ page }) => {
+    <span class="kw">await</span> page.<span class="fn">goto</span>(url, { waitUntil: <span class="str">'load'</span> });
+    <span class="kw">await</span> <span class="fn">prepPage</span>(page);
+    <span class="kw">await</span> <span class="fn">expect</span>(page).<span class="fn">toHaveScreenshot</span>(`${name}.png`);
+  });
+}</pre>
+  </div>
+
+  <p>
+    Each iteration creates a named Playwright test. The test name is the <code>name</code> field
+    from the PAGES array (e.g., <code>services-revenue-lifecycle-strategy</code>). The baseline
+    PNG filename is derived from this name plus the project name — for example,
+    <code>services-revenue-lifecycle-strategy-Desktop.png</code>.
+  </p>
+
+  <p>
+    <code>waitUntil: 'load'</code> is specifically important. The alternative,
+    <code>domcontentloaded</code>, fires as soon as the HTML is parsed — before stylesheets have
+    finished downloading. Screenshots taken at <code>domcontentloaded</code> showed blank pages
+    for some pages in CI because the CSS had not loaded yet. <code>'load'</code> waits for
+    all linked resources (CSS, fonts, images) to finish.
+  </p>
+
+  <h3 class="sub" id="s6c">6.3 prepPage() — Why It Exists</h3>
+
+  <p>
+    After navigation and before the screenshot, the <code>prepPage()</code> function injects
+    a CSS override tag into the live page. This CSS is never saved to disk — it only exists
+    in the browser's memory for the duration of the test.
+  </p>
+
+  <div class="code-block">
+    <div class="code-block-label">prepPage() — injected CSS</div>
+    <pre><span class="kw">async function</span> <span class="fn">prepPage</span>(page) {
+  <span class="kw">await</span> page.<span class="fn">addStyleTag</span>({
+    content: <span class="str">`
+      *, *::before, *::after {
+        animation-duration: 0s !important;
+        animation-delay: 0s !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+      }
+      ::-webkit-scrollbar { display: none !important; }
+      html { scrollbar-width: none !important; }
+    `</span>,
+  });
+}</pre>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Rule</th><th>Why It Is Needed</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>animation-duration: 0s</code></td>
+          <td>CSS keyframe animations (loading spinners, fade-ins, pulse effects) run on a timer. If a screenshot is taken mid-animation, the element is in a transitional state that differs from the baseline. Setting duration to 0 forces all animations to their end state instantly.</td>
+        </tr>
+        <tr>
+          <td><code>animation-delay: 0s</code></td>
+          <td>Some animations are delayed to stagger their entrance. A delayed animation means the element may still be at opacity 0 or off-screen when the screenshot fires. Zeroing the delay ensures all animated elements are visible immediately.</td>
+        </tr>
+        <tr>
+          <td><code>transition-duration: 0s</code></td>
+          <td>CSS transitions on hover states, nav dropdowns, and button effects can leave elements mid-transition if triggered by page load scripts. Zero duration snaps all transitions to their resolved state.</td>
+        </tr>
+        <tr>
+          <td><code>transition-delay: 0s</code></td>
+          <td>Same reason as animation-delay — prevents staggered transitions from leaving elements in a pre-transition state.</td>
+        </tr>
+        <tr>
+          <td><code>::-webkit-scrollbar { display: none }</code></td>
+          <td>On headed (non-headless) Chrome, a scrollbar renders on the right edge of the viewport. This scrollbar occupies approximately 15px of width, making the effective content area 1265px instead of 1280px. This caused every test to fail with 100% of pixels different due to layout reflow. Hiding the scrollbar normalises the viewport width between headed and headless modes.</td>
+        </tr>
+        <tr>
+          <td><code>scrollbar-width: none</code></td>
+          <td>Firefox scrollbar equivalent — ensures consistent behaviour across browsers even though Chromium is the primary test browser.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠</div>
+    <div class="callout-body">
+      <strong>This CSS does not affect your live site</strong>
+      <p>
+        <code>page.addStyleTag()</code> injects styles only into the browser's in-memory DOM
+        during the test run. It does not write to any file. The moment the browser closes after
+        the test, the injection is gone. Your site files are never touched.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ S7 -->
+<div class="page page-break" id="s7">
+
+  <div class="section-header">
+    <div class="section-num">Section 07</div>
+    <h2>Baseline PNG Management</h2>
+  </div>
+
+  <h3 class="sub" id="s7a">7.1 Where Baselines Are Stored</h3>
+
+  <p>
+    Playwright stores baseline PNGs in a folder named after the test file, suffixed with
+    <code>-snapshots</code>:
+  </p>
+
+  <div class="file-tree">
+<span class="dir">tests/</span>
+<span class="dir">  visual/</span>
+<span class="file">    snapshots.spec.js</span>
+<span class="dir highlight">    snapshots.spec.js-snapshots/</span>
+<span class="highlight">      homepage-Desktop.png</span>
+<span class="highlight">      homepage-Mobile.png</span>
+<span class="highlight">      services-revenue-lifecycle-strategy-Desktop.png</span>
+<span class="highlight">      services-revenue-lifecycle-strategy-Mobile.png</span>
+<span class="file">      ... (156 PNG files total)</span>
+  </div>
+
+  <p>
+    These PNGs are committed to the git repository. This is intentional and important — the
+    baselines need to be version-controlled alongside the code. When a PR is opened, CI checks
+    out the branch (which includes the current baselines from that branch) and compares
+    screenshots against those baselines. The baselines travel with the code.
+  </p>
+
+  <p>
+    Each PNG filename encodes three pieces of information: the page name, the project (viewport),
+    and implicitly the platform (Windows, because baselines were generated on <code>windows-latest</code>).
+  </p>
+
+  <h3 class="sub" id="s7b">7.2 Why CI Generates Baselines, Not the Local Machine</h3>
+
+  <p>
+    This is the most important operational detail in the entire test suite. Font rendering
+    on Windows 11 (local developer machine) differs from font rendering on Windows Server
+    (GitHub Actions <code>windows-latest</code> runner) due to differences in:
+  </p>
+
+  <ul class="detailed">
+    <li><strong>ClearType settings</strong> — the sub-pixel font smoothing algorithm differs between consumer Windows 11 and Windows Server 2022</li>
+    <li><strong>GPU rendering path</strong> — developer machines use a physical GPU for rendering; CI runners use software rendering (WARP)</li>
+    <li><strong>DPI scaling</strong> — developer machines may have DPI scaling applied; CI runners run at 96 DPI</li>
+    <li><strong>Font hinting</strong> — the degree of font hinting applied to render sharp characters differs between environments</li>
+  </ul>
+
+  <p>
+    These differences cause text-heavy sections to differ by 3–5% in pixel values even when
+    the layout is identical. If baselines are generated locally and CI compares against them,
+    text pixels will almost always fall outside the tolerance threshold, causing false failures
+    on every run.
+  </p>
+
+  <p>
+    The solution is to generate baselines <em>on the same environment that runs the tests</em>.
+    The <code>update-snapshots.yml</code> workflow runs on <code>windows-latest</code> and
+    regenerates all baselines in that environment. CI also runs on <code>windows-latest</code>.
+    Both use the same rendering path — comparisons are always apples-to-apples.
+  </p>
+
+  <div class="callout success">
+    <div class="callout-icon">✓</div>
+    <div class="callout-body">
+      <strong>Rule: always regenerate baselines using the GitHub Actions workflow</strong>
+      <p>
+        Never run <code>--update-snapshots</code> locally and commit the resulting PNGs.
+        Those PNGs will fail on CI due to environment rendering differences.
+        Always use the <code>Update Visual Snapshots</code> GitHub Actions workflow.
+      </p>
+    </div>
+  </div>
+
+  <h3 class="sub" id="s7c">7.3 When to Regenerate Baselines</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Scenario</th><th>Action Required</th><th>How</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Intentional design change (new color, layout update)</td>
+          <td>Regenerate baselines to accept the new design as correct</td>
+          <td>Run <code>Update Visual Snapshots</code> workflow from Actions tab</td>
+        </tr>
+        <tr>
+          <td>New page added to the site</td>
+          <td>Add the page to the PAGES array, then regenerate</td>
+          <td>Edit <code>snapshots.spec.js</code>, push, run workflow</td>
+        </tr>
+        <tr>
+          <td>Page removed from the site</td>
+          <td>Remove from PAGES array and delete old PNG files</td>
+          <td>Edit <code>snapshots.spec.js</code>, delete orphan PNGs, push</td>
+        </tr>
+        <tr>
+          <td>A test is failing due to an accidental regression</td>
+          <td>Fix the regression — do NOT regenerate baselines to hide it</td>
+          <td>Find and revert the CSS/HTML change that caused the diff</td>
+        </tr>
+        <tr>
+          <td>All tests fail after switching CI runner OS</td>
+          <td>Regenerate baselines on new OS</td>
+          <td>Run workflow after updating <code>runs-on</code> in ci.yml</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ S8 -->
+<div class="page page-break" id="s8">
+
+  <div class="section-header">
+    <div class="section-num">Section 08</div>
+    <h2>CI/CD Pipeline</h2>
+  </div>
+
+  <p>
+    Three GitHub Actions workflows exist in <code>.github/workflows/</code>. Two are part of
+    the test suite; one is the existing deployment workflow that was not modified.
+  </p>
+
+  <h3 class="sub" id="s8a">8.1 ci.yml — Automatic on PR and Push</h3>
+
+  <div class="code-block">
+    <div class="code-block-label">.github/workflows/ci.yml</div>
+    <pre><span class="key">name</span>: CI
+
+<span class="key">on</span>:
+  <span class="key">pull_request</span>:
+    <span class="key">branches</span>: [main]
+  <span class="key">push</span>:
+    <span class="key">branches</span>: [main]
+
+<span class="key">jobs</span>:
+  <span class="key">test</span>:
+    <span class="key">runs-on</span>: windows-latest
+
+    <span class="key">steps</span>:
+      - <span class="key">uses</span>: actions/checkout@v4
+      - <span class="key">uses</span>: actions/setup-node@v4
+        <span class="key">with</span>:
+          <span class="key">node-version</span>: <span class="str">'20'</span>
+          <span class="key">cache</span>: <span class="str">'npm'</span>
+      - <span class="key">name</span>: Install dependencies
+        <span class="key">run</span>: npm ci
+      - <span class="key">name</span>: Install Playwright browsers
+        <span class="key">run</span>: npx playwright install --with-deps chromium
+      - <span class="key">name</span>: Run tests
+        <span class="key">run</span>: npx playwright test
+      - <span class="key">name</span>: Upload test report
+        <span class="key">if</span>: always()
+        <span class="key">uses</span>: actions/upload-artifact@v4
+        <span class="key">with</span>:
+          <span class="key">name</span>: playwright-report
+          <span class="key">path</span>: playwright-report/
+          <span class="key">retention-days</span>: <span class="num">7</span></pre>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Step</th><th>What It Does</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Trigger: <code>pull_request</code></td>
+          <td>Runs when a PR is opened, updated, or re-opened against <code>main</code></td>
+          <td>This is the primary gate — tests must pass before a merge is allowed. Branch protection requires this check to pass.</td>
+        </tr>
+        <tr>
+          <td>Trigger: <code>push to main</code></td>
+          <td>Runs again after a PR is merged to <code>main</code></td>
+          <td>Post-merge verification. Confirms the merged state of <code>main</code> is clean. Also triggers the FTP deploy.</td>
+        </tr>
+        <tr>
+          <td><code>runs-on: windows-latest</code></td>
+          <td>Uses a Windows Server 2022 runner</td>
+          <td>Must match the OS used to generate baselines. Windows is used instead of ubuntu-latest because font rendering on Linux differs from Windows. The site is developed on Windows so Windows CI gives the most accurate comparison.</td>
+        </tr>
+        <tr>
+          <td><code>actions/checkout@v4</code></td>
+          <td>Checks out the repository code</td>
+          <td>Gives the runner access to all files including the baseline PNGs in <code>tests/visual/snapshots.spec.js-snapshots/</code>.</td>
+        </tr>
+        <tr>
+          <td><code>setup-node + cache: npm</code></td>
+          <td>Installs Node 20, caches the npm cache between runs</td>
+          <td>Caching means <code>npm ci</code> only downloads packages when <code>package-lock.json</code> changes — saves ~30 seconds on most runs.</td>
+        </tr>
+        <tr>
+          <td><code>npm ci</code></td>
+          <td>Installs exact versions from <code>package-lock.json</code></td>
+          <td>Unlike <code>npm install</code>, <code>npm ci</code> never modifies <code>package-lock.json</code> — it fails if there is a mismatch. Ensures reproducible installs. Also installs <code>serve</code> from devDependencies so it is available without downloading at test time.</td>
+        </tr>
+        <tr>
+          <td><code>playwright install --with-deps chromium</code></td>
+          <td>Downloads the Chromium browser binary + OS dependencies</td>
+          <td>Playwright bundles its own browser — it does not use whatever Chrome is installed on the system. <code>--with-deps</code> installs required system libraries (font rendering, GPU libs) that the headless browser needs on Windows Server.</td>
+        </tr>
+        <tr>
+          <td><code>npx playwright test</code></td>
+          <td>Runs all tests with 4 workers, 1 retry on failure</td>
+          <td>This is the main event. Runs all 156 snapshot tests in parallel. The job exits with code 1 if any test fails after retries, which marks the GitHub Check as failed.</td>
+        </tr>
+        <tr>
+          <td><code>upload-artifact (if: always())</code></td>
+          <td>Uploads the HTML report regardless of pass/fail</td>
+          <td><code>if: always()</code> ensures the report is uploaded even when tests fail — which is exactly when you need it most. The report is available in the Actions tab under "Artifacts" for 7 days.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub" id="s8b">8.2 update-snapshots.yml — Manual Baseline Refresh</h3>
+
+  <div class="code-block">
+    <div class="code-block-label">.github/workflows/update-snapshots.yml</div>
+    <pre><span class="key">name</span>: Update Visual Snapshots
+
+<span class="key">on</span>:
+  <span class="key">workflow_dispatch</span>:   <span class="cm"># Manual trigger only</span>
+
+<span class="key">jobs</span>:
+  <span class="key">update-snapshots</span>:
+    <span class="key">runs-on</span>: windows-latest
+
+    <span class="key">steps</span>:
+      - <span class="key">uses</span>: actions/checkout@v4
+      - <span class="key">uses</span>: actions/setup-node@v4
+        <span class="key">with</span>:
+          <span class="key">node-version</span>: <span class="str">'20'</span>
+          <span class="key">cache</span>: <span class="str">'npm'</span>
+      - <span class="key">name</span>: Install dependencies
+        <span class="key">run</span>: npm ci
+      - <span class="key">name</span>: Install Playwright browsers
+        <span class="key">run</span>: npx playwright install --with-deps chromium
+      - <span class="key">name</span>: Regenerate snapshots
+        <span class="key">run</span>: npx playwright test tests/visual --update-snapshots
+      - <span class="key">name</span>: Commit updated snapshots
+        <span class="key">run</span>: |
+          git config user.name <span class="str">"github-actions[bot]"</span>
+          git config user.email <span class="str">"github-actions[bot]@users.noreply.github.com"</span>
+          git add tests/visual/snapshots.spec.js-snapshots/
+          git diff --staged --quiet || git commit -m <span class="str">"chore: update visual snapshot baselines"</span>
+          git push</pre>
+  </div>
+
+  <p>
+    <code>workflow_dispatch</code> means this workflow can only be started manually from the
+    GitHub Actions tab. It never runs automatically. This is intentional — regenerating baselines
+    is an intentional human decision, not something that should happen automatically on every push.
+  </p>
+
+  <p>
+    The last step uses <code>git diff --staged --quiet || git commit</code>. This is a safety
+    check: if the baselines did not change (no visual difference detected), it skips the commit
+    rather than creating an empty commit. The <code>||</code> means "if the diff is NOT quiet
+    (i.e., there are changes), then commit."
+  </p>
+
+  <h3 class="sub" id="s8c">8.3 ftp-deploy-production.yml — Existing Deploy (Untouched)</h3>
+
+  <p>
+    This workflow existed before the test suite was added. It deploys the site via FTP when code
+    is pushed to <code>main</code>. It was deliberately not modified during the test suite
+    implementation. Its trigger (<code>push to main</code>) means it runs after a PR is merged
+    and CI passes — the deploy only happens after tests have confirmed the code is safe.
+  </p>
+
+  <h3 class="sub">Workflow Trigger Summary</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Event</th><th>ci.yml</th><th>update-snapshots.yml</th><th>ftp-deploy.yml</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>PR opened/updated against main</td>
+          <td><span class="badge badge-green">Runs</span></td>
+          <td><span class="badge badge-red">No</span></td>
+          <td><span class="badge badge-red">No</span></td>
+        </tr>
+        <tr>
+          <td>Push / merge to main</td>
+          <td><span class="badge badge-green">Runs</span></td>
+          <td><span class="badge badge-red">No</span></td>
+          <td><span class="badge badge-green">Runs</span></td>
+        </tr>
+        <tr>
+          <td>Manual trigger (Actions tab)</td>
+          <td><span class="badge badge-red">No</span></td>
+          <td><span class="badge badge-green">Runs</span></td>
+          <td><span class="badge badge-green">Runs</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ S9 -->
+<div class="page page-break" id="s9">
+
+  <div class="section-header">
+    <div class="section-num">Section 09</div>
+    <h2>Branch Protection Rules</h2>
+  </div>
+
+  <p>
+    Branch protection is configured using GitHub Rulesets (the modern replacement for the
+    classic Branch Protection Rules). A Ruleset applies to the <code>main</code> branch and
+    enforces the following rules. Crucially, the bypass list is <strong>empty</strong> —
+    nobody, including repository admins, can bypass these rules.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Rule</th><th>Setting</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Require a pull request before merging</td>
+          <td>Enabled — 0 required approvals</td>
+          <td>Nobody can push directly to <code>main</code>. All changes must come through a PR. 0 approvals means the PR author can merge their own PR without waiting for someone else — but they still cannot bypass the test check.</td>
+        </tr>
+        <tr>
+          <td>Required status checks</td>
+          <td><code>test</code> (from ci.yml) must pass</td>
+          <td>The merge button is disabled until the <code>test</code> job in <code>ci.yml</code> reports success. This is the core enforcement mechanism — tests must pass before code can enter <code>main</code>.</td>
+        </tr>
+        <tr>
+          <td>Block force pushes</td>
+          <td>Enabled</td>
+          <td>Even users with admin access cannot use <code>git push --force</code> to overwrite main branch history. Prevents accidental or intentional history rewriting.</td>
+        </tr>
+        <tr>
+          <td>Require conversation resolution</td>
+          <td>Enabled</td>
+          <td>Any review comment left on a PR must be marked as resolved before the PR can be merged. Prevents open questions or unaddressed feedback from being merged.</td>
+        </tr>
+        <tr>
+          <td>Bypass list</td>
+          <td>Empty</td>
+          <td>No user or role is exempt from any of the above rules. Admin must also open a PR, pass all tests, and merge normally.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub">Why 0 Required Approvals</h3>
+  <p>
+    Requiring 1 approval means every PR — including admin's own PRs — would need someone else
+    to review and approve it. For a small team where the admin frequently pushes changes, this
+    creates unnecessary friction. The protection value comes from the test check, not peer
+    review. 0 approvals keeps the flow smooth while still enforcing all automated checks.
+    If the team grows and peer review becomes important, this can be raised to 1.
+  </p>
+
+  <h3 class="sub">The Full PR Flow</h3>
+
+  <div class="flow">
+    <div class="flow-step">Create branch<small>from main</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Push changes<small>to branch</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Open PR<small>against main</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">CI runs<small>automatically</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">All 156 tests<small>pass / fail</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Merge PR<small>if pass</small></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">Deploy<small>via FTP</small></div>
+  </div>
+
+  <p>
+    If any of the 156 tests fail, the merge button on GitHub displays "Required status check
+    'test' has not passed" and is disabled. The PR author must investigate the failure, fix
+    the code, and push an update. CI re-runs on the updated push and, if tests now pass,
+    the merge button becomes active.
+  </p>
+
+  <h3 class="sub">What Happens When a Test Fails</h3>
+
+  <ol class="detailed">
+    <li>
+      <strong>Go to the PR on GitHub.</strong> Click the "Details" link next to the failed
+      <code>test</code> check.
+    </li>
+    <li>
+      <strong>In the Actions run, download the <code>playwright-report</code> artifact.</strong>
+      Open <code>index.html</code> in the report folder.
+    </li>
+    <li>
+      <strong>Find the failing test.</strong> The report shows the test name, the actual
+      screenshot, the baseline screenshot, and a diff image with the changed regions
+      highlighted in red.
+    </li>
+    <li>
+      <strong>Determine if the change was intentional or accidental.</strong>
+      <ul>
+        <li>If accidental (a CSS regression): find and revert the change, push again.</li>
+        <li>If intentional (a redesign): merge the PR, then run the <code>Update Visual Snapshots</code> workflow to update baselines.</li>
+      </ul>
+    </li>
+  </ol>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ S10 -->
+<div class="page page-break" id="s10">
+
+  <div class="section-header">
+    <div class="section-num">Section 10</div>
+    <h2>Day-to-Day Developer Workflow</h2>
+  </div>
+
+  <h3 class="sub">Making a Routine Change (bug fix, content update)</h3>
+
+  <ol class="detailed">
+    <li>Create a new branch: <code>git checkout -b fix/nav-padding</code></li>
+    <li>Make your changes to HTML/CSS files</li>
+    <li>Optionally run tests locally first: <code>npx playwright test tests/visual</code></li>
+    <li>Commit and push: <code>git push origin fix/nav-padding</code></li>
+    <li>Open a pull request on GitHub against <code>main</code></li>
+    <li>CI runs automatically — wait for the green check</li>
+    <li>If tests pass: merge the PR. FTP deploy runs automatically.</li>
+    <li>If tests fail: review the diff in the HTML report, fix the issue, push again</li>
+  </ol>
+
+  <h3 class="sub">Making an Intentional Design Change</h3>
+
+  <ol class="detailed">
+    <li>Create a branch, make the design changes, push and open a PR</li>
+    <li>CI runs — tests will fail because the new design differs from baselines (expected)</li>
+    <li>Review the diffs in the report — confirm the changes look correct and intentional</li>
+    <li>Merge the PR (the tests will still show as failed — this is the one exception where you merge with a failure)</li>
+    <li>Go to GitHub Actions tab → <strong>Update Visual Snapshots</strong> → Run workflow</li>
+    <li>The workflow regenerates all 156 baseline PNGs from the new design and commits them to <code>main</code></li>
+    <li>Future PRs will now be compared against the updated baselines</li>
+  </ol>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠</div>
+    <div class="callout-body">
+      <strong>Merging with failed tests — when is it acceptable?</strong>
+      <p>
+        Only when you are certain the failures are caused by an intentional design change that
+        you have reviewed and approved. Never merge with failures from an unreviewed or unknown
+        cause. When in doubt, investigate first.
+      </p>
+    </div>
+  </div>
+
+  <h3 class="sub">Adding a New Page to the Site</h3>
+
+  <ol class="detailed">
+    <li>Create the HTML file in the appropriate folder</li>
+    <li>Open <code>tests/visual/snapshots.spec.js</code></li>
+    <li>Add a new entry to the PAGES array in the correct group section</li>
+    <li>Push and open a PR — CI will fail because no baseline PNG exists yet for the new page</li>
+    <li>Merge the PR</li>
+    <li>Run the <strong>Update Visual Snapshots</strong> workflow — it generates the baseline for the new page</li>
+    <li>Subsequent CI runs will now include the new page in comparisons</li>
+  </ol>
+
+  <h3 class="sub">Removing a Page from the Site</h3>
+
+  <ol class="detailed">
+    <li>Delete the HTML file</li>
+    <li>Remove the corresponding entry from the PAGES array in <code>snapshots.spec.js</code></li>
+    <li>Delete the two orphaned PNG files from <code>tests/visual/snapshots.spec.js-snapshots/</code> (Desktop and Mobile)</li>
+    <li>Commit all three changes together and push as a PR</li>
+  </ol>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ S11 -->
+<div class="page page-break" id="s11">
+
+  <div class="section-header">
+    <div class="section-num">Section 11</div>
+    <h2>Commands Reference</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Command</th><th>What It Does</th><th>When to Use</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>npx playwright test</code></td>
+          <td>Runs the full test suite (all 156 tests, all projects)</td>
+          <td>Final check before pushing. Uses all CPU cores locally.</td>
+        </tr>
+        <tr>
+          <td><code>npx playwright test tests/visual</code></td>
+          <td>Runs only the visual snapshot tests</td>
+          <td>During development when you only need to check visuals. Faster than running the full suite if other test types are added later.</td>
+        </tr>
+        <tr>
+          <td><code>npx playwright test --headed</code></td>
+          <td>Runs tests in a visible Chrome window</td>
+          <td>Debugging — you can watch the browser navigate each page. Slower but useful for seeing exactly what Playwright sees.</td>
+        </tr>
+        <tr>
+          <td><code>npx playwright test tests/visual --update-snapshots</code></td>
+          <td>Regenerates baseline PNGs from current page state</td>
+          <td>Only use locally for exploration. Always use the GitHub Actions workflow for official baselines.</td>
+        </tr>
+        <tr>
+          <td><code>npx playwright show-report</code></td>
+          <td>Opens the HTML report in the browser</td>
+          <td>After running tests locally — review pass/fail results, diffs, and screenshots.</td>
+        </tr>
+        <tr>
+          <td><code>npx playwright test --grep "homepage"</code></td>
+          <td>Runs only tests whose name contains "homepage"</td>
+          <td>When you only want to test a single page. Combine with <code>--headed</code> for quick debugging of one page.</td>
+        </tr>
+        <tr>
+          <td><code>npx playwright test --project=Desktop</code></td>
+          <td>Runs only the Desktop project (skips Mobile)</td>
+          <td>When you only care about desktop layout. Halves the number of tests.</td>
+        </tr>
+        <tr>
+          <td><code>npx playwright test --project=Mobile</code></td>
+          <td>Runs only the Mobile project</td>
+          <td>When debugging a mobile-specific layout issue.</td>
+        </tr>
+        <tr>
+          <td><code>npx playwright test --workers=1</code></td>
+          <td>Runs tests sequentially (no parallelism)</td>
+          <td>When debugging — parallel tests can interleave their output making it hard to read. Sequential is easier to follow.</td>
+        </tr>
+        <tr>
+          <td><code>npx playwright test --timeout=60000</code></td>
+          <td>Sets a 60 second per-test timeout</td>
+          <td>When testing on a slow machine or network — prevents false timeouts.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ S12 -->
+<div class="page page-break" id="s12">
+
+  <div class="section-header">
+    <div class="section-num">Section 12</div>
+    <h2>Troubleshooting Guide</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Symptom</th><th>Root Cause</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>All tests fail with 100% pixel difference</td>
+          <td>Baselines were generated on a different OS or environment</td>
+          <td>Run the <code>Update Visual Snapshots</code> GitHub Actions workflow to regenerate baselines on <code>windows-latest</code></td>
+        </tr>
+        <tr>
+          <td>Screenshot shows a blank/white page</td>
+          <td>CSS did not load before screenshot — <code>waitUntil</code> may be wrong, or the server did not start in time</td>
+          <td>Confirm <code>waitUntil: 'load'</code> is set. Check that <code>serve</code> is in <code>devDependencies</code> in <code>package.json</code> so <code>npm ci</code> installs it. Increase <code>webServer.timeout</code> if server starts slowly.</td>
+        </tr>
+        <tr>
+          <td>All tests fail with a 15px width shift</td>
+          <td>Test was run in headed mode without scrollbar CSS, or <code>prepPage()</code> was not called</td>
+          <td>Confirm <code>prepPage(page)</code> is called after navigation in the test. The scrollbar-hiding CSS must be injected before the screenshot.</td>
+        </tr>
+        <tr>
+          <td>One specific page fails consistently</td>
+          <td>That page has an animation, dynamic content, or a different layout that was changed</td>
+          <td>Run with <code>--grep "page-name" --headed</code> and watch what renders. If it's a real regression, fix the CSS. If it's an intentional change, regenerate baselines.</td>
+        </tr>
+        <tr>
+          <td>Tests pass locally but fail on CI</td>
+          <td>Font rendering difference between local Windows 11 and CI Windows Server</td>
+          <td>Never use locally-generated baselines for CI comparison. Run the <code>Update Visual Snapshots</code> workflow to generate CI-compatible baselines.</td>
+        </tr>
+        <tr>
+          <td>CI times out waiting for web server</td>
+          <td><code>serve</code> is not installed and npm is trying to download it during the test run</td>
+          <td>Confirm <code>"serve": "^14.2.6"</code> is in <code>devDependencies</code> in <code>package.json</code>. Run <code>npm install</code> locally, commit the updated <code>package-lock.json</code>.</td>
+        </tr>
+        <tr>
+          <td>CI check passes but merge button is still disabled</td>
+          <td>The status check name in the Ruleset does not match the job name in ci.yml</td>
+          <td>In GitHub Ruleset settings, the required status check must be exactly <code>test</code> (matching the job name <code>jobs: test:</code> in ci.yml).</td>
+        </tr>
+        <tr>
+          <td>update-snapshots workflow fails with "nothing to commit"</td>
+          <td>No visual changes were detected — baselines are already up to date</td>
+          <td>This is not an error. The <code>git diff --staged --quiet ||</code> guard prevents an empty commit. The workflow completes successfully without committing.</td>
+        </tr>
+        <tr>
+          <td>Flaky test — fails occasionally with no code changes</td>
+          <td>Transient rendering variance (slight font or GPU rendering difference between runs)</td>
+          <td>The <code>retries: 1</code> in CI configuration handles most transient failures automatically. If a test is persistently flaky, consider increasing <code>maxDiffPixelRatio</code> slightly for that page, or investigate if there is dynamic content (date/time) rendering in the hero.</td>
+        </tr>
+        <tr>
+          <td>New page test fails with "missing baseline"</td>
+          <td>A page was added to PAGES array but baselines have not been generated yet</td>
+          <td>Run the <code>Update Visual Snapshots</code> workflow after adding the page. The workflow generates the new baseline PNG and commits it.</td>
+        </tr>
+        <tr>
+          <td>Push directly to main is rejected</td>
+          <td>Branch protection Ruleset blocks direct pushes to main</td>
+          <td>This is expected and correct. Create a branch, push to the branch, open a PR. Nobody can push directly to main — including admins.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ S13 -->
+<div class="page page-break" id="s13">
+
+  <div class="section-header">
+    <div class="section-num">Section 13</div>
+    <h2>File Structure</h2>
+  </div>
+
+  <p>All test-related files added to the repository:</p>
+
+  <div class="file-tree">
+<span class="dir">forsys-production/</span>
+<span class="highlight">├── package.json               </span><span class="comment">← Playwright + serve in devDependencies</span>
+<span class="highlight">├── package-lock.json          </span><span class="comment">← Locked dependency versions</span>
+<span class="highlight">├── playwright.config.js       </span><span class="comment">← All Playwright configuration</span>
+<span class="dir">├── .github/</span>
+<span class="dir">│   └── workflows/</span>
+<span class="highlight">│       ├── ci.yml             </span><span class="comment">← Runs on PR + push to main</span>
+<span class="highlight">│       ├── update-snapshots.yml </span><span class="comment">← Manual baseline refresh</span>
+<span class="file">│       └── ftp-deploy-production.yml </span><span class="comment">← Existing deploy (untouched)</span>
+<span class="dir">└── tests/</span>
+<span class="dir">    └── visual/</span>
+<span class="highlight">        ├── snapshots.spec.js  </span><span class="comment">← 78 page definitions + test loop</span>
+<span class="dir highlight">        └── snapshots.spec.js-snapshots/</span>
+<span class="file">            ├── homepage-Desktop.png</span>
+<span class="file">            ├── homepage-Mobile.png</span>
+<span class="file">            ├── ... (156 baseline PNGs total)</span>
+  </div>
+
+  <p style="margin-top: 32px;">Relationship between files:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>File</th><th>Purpose</th><th>Who Edits It</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>playwright.config.js</code></td>
+          <td>Global configuration — timeouts, thresholds, viewports, server command</td>
+          <td>Developer, when tuning test behaviour or adding projects</td>
+        </tr>
+        <tr>
+          <td><code>tests/visual/snapshots.spec.js</code></td>
+          <td>Page list and test logic</td>
+          <td>Developer, when adding/removing pages</td>
+        </tr>
+        <tr>
+          <td><code>snapshots.spec.js-snapshots/*.png</code></td>
+          <td>Approved baseline screenshots — the "source of truth" for what each page should look like</td>
+          <td>Only by the <code>update-snapshots.yml</code> workflow (never manually)</td>
+        </tr>
+        <tr>
+          <td><code>.github/workflows/ci.yml</code></td>
+          <td>Automated test run on PR and push</td>
+          <td>Developer, if CI steps need to change</td>
+        </tr>
+        <tr>
+          <td><code>.github/workflows/update-snapshots.yml</code></td>
+          <td>Manual workflow to regenerate baselines</td>
+          <td>Rarely — only if the regeneration process itself needs to change</td>
+        </tr>
+        <tr>
+          <td><code>package.json</code></td>
+          <td>Declares Playwright and serve as dev dependencies</td>
+          <td>Developer, when updating dependency versions</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════ S14 -->
+<div class="page page-break" id="s14">
+
+  <div class="section-header">
+    <div class="section-num">Section 14</div>
+    <h2>Performance &amp; Cost</h2>
+  </div>
+
+  <h3 class="sub">CI Runtime Estimate</h3>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Phase</th><th>Estimated Time</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Checkout + Node setup</td>
+          <td>~30s</td>
+          <td>Cached npm speeds up subsequent runs</td>
+        </tr>
+        <tr>
+          <td><code>npm ci</code></td>
+          <td>~30s (cached) / ~90s (cold)</td>
+          <td>npm cache saves ~60s on most runs</td>
+        </tr>
+        <tr>
+          <td>Playwright browser install</td>
+          <td>~60s</td>
+          <td>Chromium binary + Windows dependencies. Not cached by default.</td>
+        </tr>
+        <tr>
+          <td>Web server startup</td>
+          <td>~5s</td>
+          <td>Playwright waits for server to respond before running tests</td>
+        </tr>
+        <tr>
+          <td>156 tests with 4 workers</td>
+          <td>~5–7 min</td>
+          <td>Each test: ~2–4s. 156 tests / 4 workers = ~40 batches × ~3s average</td>
+        </tr>
+        <tr>
+          <td>Upload artifact</td>
+          <td>~15s</td>
+          <td>HTML report ZIP upload</td>
+        </tr>
+        <tr>
+          <td><strong>Total estimated</strong></td>
+          <td><strong>~8–10 min</strong></td>
+          <td>Well within the 15 min target</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="sub">GitHub Actions Cost</h3>
+
+  <p>
+    GitHub Actions bills by the minute for private repositories. The billing rate for
+    <code>windows-latest</code> runners is <strong>2× the base rate</strong> compared to
+    Linux runners — so 10 minutes of Windows CI = 20 billed minutes.
+  </p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Repo Visibility</th><th>Free Minutes</th><th>Effective Free Budget</th><th>Impact</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Public</td>
+          <td>Unlimited</td>
+          <td>Unlimited</td>
+          <td>No cost</td>
+        </tr>
+        <tr>
+          <td>Private</td>
+          <td>2,000 Linux min/month</td>
+          <td>~1,000 Windows min/month (2× multiplier)</td>
+          <td>~100 PR runs/month before charges</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    The repository is currently public, so CI runs are entirely free regardless of volume.
+    If the repository is made private in the future, 100 PR runs per month on the free tier
+    is generous for a website project.
+  </p>
+
+  <h3 class="sub">Storage</h3>
+  <p>
+    156 PNG files at approximately 50–150 KB each = roughly 10–25 MB of baseline images
+    stored in the git repository. This is negligible. Git stores binary files efficiently
+    using delta compression — unchanged PNGs take very little space in git history.
+  </p>
+
+  <hr />
+
+  <p style="text-align: center; color: var(--muted); font-size: 13px; padding-top: 24px;">
+    Forsys Website — Test Suite Documentation &nbsp;·&nbsp; Playwright v1.52 &nbsp;·&nbsp; May 2026<br>
+    Generated for internal engineering reference. To print as PDF: open in Chrome → Ctrl+P → Save as PDF → set margins to Minimum.
+  </p>
+
+</div>
+
+</body>
+</html>
