@@ -51,7 +51,7 @@ test.describe('Visual Snapshots', () => {
 
   for (const { name, url } of PAGES) {
     test(name, async ({ page }) => {
-      await page.goto(url, { waitUntil: 'domcontentloaded' });
+      await page.goto(url, { waitUntil: 'load' });
       await prepPage(page);
       await expect(page).toHaveScreenshot(`${name}.png`);
     });
