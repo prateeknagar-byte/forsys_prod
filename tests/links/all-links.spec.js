@@ -62,3 +62,30 @@ test.describe('Homepage Nav Links — All Resolve', () => {
     }
   });
 });
+
+// ─── HOMEPAGE FOOTER LINKS — ALL RESOLVE ─────────────────────────────────────
+// Visits the homepage, collects every internal <a href> in the footer, and
+// checks each one returns HTTP 200. Catches footer links pointing to renamed
+// or deleted pages (footer is updated less frequently than the nav).
+
+test.describe('Homepage Footer Links — All Resolve', () => {
+  test('all footer links return HTTP 200', async ({ page }) => {
+    test.skip(page.context().browser().browserType().name() !== 'chromium');
+    await page.goto('/index.html', { waitUntil: 'domcontentloaded' });
+
+    const hrefs = await page.evaluate(() =>
+      [...document.querySelectorAll('footer a[href]')]
+        .map(a => a.getAttribute('href'))
+        .filter(h => h && !h.startsWith('http') && !h.startsWith('mailto') && !h.startsWith('#') && h.endsWith('.html'))
+    );
+
+    const unique = [...new Set(hrefs)];
+    expect(unique.length, 'No footer links found').toBeGreaterThan(0);
+
+    for (const href of unique) {
+      const url = href.startsWith('/') ? href : `/${href}`;
+      const response = await page.goto(url, { waitUntil: 'domcontentloaded' });
+      expect(response.status(), `Footer link ${href} returned ${response.status()}`).toBe(200);
+    }
+  });
+});
