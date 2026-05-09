@@ -90,7 +90,7 @@ nav {
   justify-content: space-between;
   padding: 0 48px;
   height: var(--nav-h);
-  background: rgba(255, 0, 0, 0.92);
+  background: rgba(236, 238, 255, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);

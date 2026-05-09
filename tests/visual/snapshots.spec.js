@@ -22,13 +22,17 @@ async function prepPage(page) {
       html { scrollbar-width: none !important; }
     `,
   });
-  // Stop JS-driven slideshows and reset to slide 0
+  // Kill all JS timers so slideshows stop advancing
   await page.evaluate(() => {
     const high = setTimeout(() => {}, 0);
     for (let i = 0; i <= high; i++) clearTimeout(i);
     const highI = setInterval(() => {}, 99999);
     for (let i = 0; i <= highI; i++) clearInterval(i);
-    // Reset hero slideshow to first slide
+  });
+  // Wait for browser to finish painting after timers are killed
+  await page.waitForTimeout(300);
+  // Reset hero slideshow to slide 0 (after timers are dead so it cannot advance again)
+  await page.evaluate(() => {
     const firstDot = document.querySelector('.slide-dot[data-idx="0"]');
     if (firstDot) firstDot.click();
   });

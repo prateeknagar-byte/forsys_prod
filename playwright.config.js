@@ -42,7 +42,7 @@ export default defineConfig({
       name: 'Tablet',
       use: {
         ...devices['Desktop Chrome'],
-        viewport: { width: 1024, height: 768 },
+        viewport: { width: 1000, height: 768 },
       },
     },
     {
