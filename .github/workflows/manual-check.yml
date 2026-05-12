@@ -62,51 +62,51 @@ jobs:
             exit $LASTEXITCODE
           }
 
-          # CSS file → test name prefix map
-          $cssPatterns = [ordered]@{
-            'home\.css$'              = 'homepage'
-            'services\.css$'         = 'services-'
-            'solutions\.css$'        = 'sol-'
-            'forsys-solutions\.css$' = 'fs-'
-            'industries\.css$'       = 'ind-'
-            'partnerships\.css$'     = 'partner-'
-            'resources\.css$'        = 'res-'
-            'company\.css$'          = 'co-'
+          # CSS file → URL prefix map
+          # Matches against page URLs so index.html / homepage naming mismatches are avoided
+          $cssToUrlPrefix = [ordered]@{
+            'home\.css$'              = '/index.html'
+            'services\.css$'         = '/services/'
+            'solutions\.css$'        = '/solutions/'
+            'forsys-solutions\.css$' = '/forsys-solutions/'
+            'industries\.css$'       = '/industries/'
+            'partnerships\.css$'     = '/partnerships/'
+            'resources\.css$'        = '/resources/'
+            'company\.css$'          = '/company/'
           }
 
-          $grepParts = [System.Collections.Generic.List[string]]::new()
+          $urlFilters = [System.Collections.Generic.List[string]]::new()
 
-          # Changed / new HTML files → use filename (without .html) as grep term
-          # All handcrafted names end with the filename, so this always matches.
+          # Changed / new HTML files → use their exact URL path as the filter
           $htmlFiles = $changed | Where-Object {
             $_ -match '\.html$' -and
             $_ -notmatch '^(embed|node_modules|assets|tests|playwright-report|test-results)/'
           }
           foreach ($f in $htmlFiles) {
-            $stem = [System.IO.Path]::GetFileNameWithoutExtension($f)
-            $grepParts.Add($stem)
+            $urlFilters.Add('/' + $f.Replace('\', '/'))
           }
 
-          # Changed CSS files → category prefix
+          # Changed CSS files → affected URL prefix
           $cssFiles = $changed | Where-Object { $_ -match '\.css$' }
           foreach ($css in $cssFiles) {
-            foreach ($pattern in $cssPatterns.Keys) {
+            foreach ($pattern in $cssToUrlPrefix.Keys) {
               if ($css -match $pattern) {
-                $grepParts.Add($cssPatterns[$pattern])
+                $urlFilters.Add($cssToUrlPrefix[$pattern])
                 break
               }
             }
           }
 
-          if ($grepParts.Count -eq 0) {
+          if ($urlFilters.Count -eq 0) {
             Write-Host "`nNo visual changes detected — skipping snapshot update."
             exit 0
           }
 
-          $unique  = $grepParts | Select-Object -Unique
-          $grepStr = $unique -join '|'
-          Write-Host "`nUpdating snapshots matching: $grepStr"
-          npx playwright test tests/visual "--grep=$grepStr" --update-snapshots
+          $unique    = $urlFilters | Select-Object -Unique
+          $filterStr = $unique -join ','
+          Write-Host "`nUpdating snapshots for URLs matching: $filterStr"
+          $env:SNAPSHOT_URL_FILTER = $filterStr
+          npx playwright test tests/visual --update-snapshots
           exit $LASTEXITCODE
 
       # ── Full test suite ──────────────────────────────────────────────────────

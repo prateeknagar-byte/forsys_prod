@@ -182,9 +182,22 @@ function _discoverPages(dir, base = '') {
 
 const ALL_PAGES = [...PAGES, ..._discoverPages(process.cwd())];
 
+// ─── URL FILTER (CI use only) ─────────────────────────────────────────────────
+// When SNAPSHOT_URL_FILTER is set, only pages whose URL contains one of the
+// comma-separated values are snapshotted. Used by manual-check.yml to update
+// only pages affected by the current branch's changes.
+// Example: SNAPSHOT_URL_FILTER=/index.html,/services/  → homepage + all services
+const _URL_FILTER = process.env.SNAPSHOT_URL_FILTER
+  ? process.env.SNAPSHOT_URL_FILTER.split(',').map(s => s.trim()).filter(Boolean)
+  : null;
+
 test.describe('Visual Snapshots', () => {
   for (const { name, url } of ALL_PAGES) {
     test(name, async ({ page }) => {
+      if (_URL_FILTER && !_URL_FILTER.some(f => url.includes(f))) {
+        test.skip();
+        return;
+      }
       await page.goto(url, { waitUntil: 'load' });
       await prepPage(page);
       await expect(page).toHaveScreenshot(`${name}.png`, { fullPage: true });
