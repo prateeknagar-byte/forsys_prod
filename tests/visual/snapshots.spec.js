@@ -1,8 +1,13 @@
 import { test, expect } from '@playwright/test';
+import fs from 'fs';
+import path from 'path';
 
 // ─── VISUAL SNAPSHOTS — FULL PAGE ─────────────────────────────────────────────
 // Full-page screenshots — captures nav, hero, all sections, and footer.
-// 78 pages × 3 viewports (Desktop 1280px, Tablet 1024px, Mobile 375px) = 234 tests.
+// Handcrafted entries use curated short names; any HTML file added to the repo
+// that is NOT in the handcrafted list is auto-discovered and named from its path
+// (e.g. /services/new-page.html → "services--new-page") so no manual PAGES edit
+// is needed when adding pages.
 // Stable: animations frozen, scrollbar hidden, JS timers cleared, page scrolled to
 // bottom first (triggers IntersectionObserver scroll-fades), then back to top,
 // slideshow reset to slide 0.
@@ -150,8 +155,34 @@ const PAGES = [
   { name: 'lead-gen-salesforce',                        url: '/lead-gen/salesforce-lead-gen-callout-form.html' },
 ];
 
+// ─── AUTO-DISCOVERY ───────────────────────────────────────────────────────────
+// Picks up any .html file on disk that is not already in the handcrafted list.
+// New pages get a name derived from their path: /a/b/c.html → "a--b--c".
+// Directories that should never be snapshotted are excluded below.
+
+const _HANDCRAFTED_URLS = new Set(PAGES.map(p => p.url));
+const _EXCLUDE = new Set(['embed', 'forsys-website-new-main', 'node_modules', 'playwright-report', 'test-results', 'assets', 'tests']);
+
+function _discoverPages(dir, base = '') {
+  const results = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      if (!_EXCLUDE.has(entry.name)) results.push(..._discoverPages(path.join(dir, entry.name), `${base}${entry.name}/`));
+    } else if (entry.name.endsWith('.html')) {
+      const url = `/${base}${entry.name}`;
+      if (!_HANDCRAFTED_URLS.has(url)) {
+        const name = url.replace(/^\//, '').replace(/\.html$/, '').replace(/\//g, '--');
+        results.push({ name, url });
+      }
+    }
+  }
+  return results;
+}
+
+const ALL_PAGES = [...PAGES, ..._discoverPages(process.cwd())];
+
 test.describe('Visual Snapshots', () => {
-  for (const { name, url } of PAGES) {
+  for (const { name, url } of ALL_PAGES) {
     test(name, async ({ page }) => {
       await page.goto(url, { waitUntil: 'load' });
       await prepPage(page);

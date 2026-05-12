@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/prateek.nagar_forsys/Desktop/muji-forsys-site/1/forsys-production/tests/links/**)",
+      "Read(//c/Users/prateek.nagar_forsys/Desktop/muji-forsys-site/1/forsys-production/tests/visual/**)",
+      "Read(//c/Users/prateek.nagar_forsys/Desktop/muji-forsys-site/1/forsys-production/.github/workflows/**)",
+      "Read(//c/Users/prateek.nagar_forsys/Desktop/muji-forsys-site/1/forsys-production/tests/**)"
+    ]
+  }
+}

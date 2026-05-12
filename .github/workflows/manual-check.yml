@@ -1,0 +1,139 @@
+name: Manual — Check New & Changed Pages
+
+# Run this on your feature branch before opening a PR.
+# It detects every new or changed page, refreshes their snapshot baselines,
+# runs the full test suite, and commits the updated PNGs back to your branch.
+# After this workflow is green, open the PR and ci.yml will pass cleanly.
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      # ── Determine which snapshots need updating ──────────────────────────────
+      # Compares the current branch against origin/main and builds a --grep
+      # pattern so only affected pages are re-snapshotted.
+      #
+      # Rules:
+      #   base.css / script.js changed  →  update ALL snapshots
+      #   services.css                  →  update services-* pages
+      #   solutions.css                 →  update sol-* pages
+      #   forsys-solutions.css          →  update fs-* pages
+      #   industries.css                →  update ind-* pages
+      #   partnerships.css              →  update partner-* pages
+      #   resources.css                 →  update res-* pages
+      #   company.css                   →  update co-* pages
+      #   home.css                      →  update homepage
+      #   any .html file added/changed  →  update that page (matched by filename)
+      - name: Update snapshots for changed pages
+        shell: pwsh
+        run: |
+          $changed = git diff --name-only "origin/main...HEAD" 2>$null
+          if (-not $changed) { $changed = @() }
+
+          Write-Host "Files changed vs main:"
+          $changed | ForEach-Object { Write-Host "  $_" }
+
+          # Global files — rebuild everything
+          $isGlobal = $changed | Where-Object { $_ -match '(^|/)base\.css$|(^|/)script\.js$' }
+          if ($isGlobal) {
+            Write-Host "`nGlobal file changed ($($isGlobal -join ', ')) — regenerating ALL snapshots"
+            npx playwright test tests/visual --update-snapshots
+            exit $LASTEXITCODE
+          }
+
+          # CSS file → test name prefix map
+          $cssPatterns = [ordered]@{
+            'home\.css$'              = 'homepage'
+            'services\.css$'         = 'services-'
+            'solutions\.css$'        = 'sol-'
+            'forsys-solutions\.css$' = 'fs-'
+            'industries\.css$'       = 'ind-'
+            'partnerships\.css$'     = 'partner-'
+            'resources\.css$'        = 'res-'
+            'company\.css$'          = 'co-'
+          }
+
+          $grepParts = [System.Collections.Generic.List[string]]::new()
+
+          # Changed / new HTML files → use filename (without .html) as grep term
+          # All handcrafted names end with the filename, so this always matches.
+          $htmlFiles = $changed | Where-Object {
+            $_ -match '\.html$' -and
+            $_ -notmatch '^(embed|node_modules|assets|tests|playwright-report|test-results)/'
+          }
+          foreach ($f in $htmlFiles) {
+            $stem = [System.IO.Path]::GetFileNameWithoutExtension($f)
+            $grepParts.Add($stem)
+          }
+
+          # Changed CSS files → category prefix
+          $cssFiles = $changed | Where-Object { $_ -match '\.css$' }
+          foreach ($css in $cssFiles) {
+            foreach ($pattern in $cssPatterns.Keys) {
+              if ($css -match $pattern) {
+                $grepParts.Add($cssPatterns[$pattern])
+                break
+              }
+            }
+          }
+
+          if ($grepParts.Count -eq 0) {
+            Write-Host "`nNo visual changes detected — skipping snapshot update."
+            exit 0
+          }
+
+          $unique  = $grepParts | Select-Object -Unique
+          $grepStr = $unique -join '|'
+          Write-Host "`nUpdating snapshots matching: $grepStr"
+          npx playwright test tests/visual "--grep=$grepStr" --update-snapshots
+          exit $LASTEXITCODE
+
+      # ── Full test suite ──────────────────────────────────────────────────────
+      - name: Run full test suite
+        run: npx playwright test
+
+      # ── Commit updated / new baseline PNGs back to the branch ───────────────
+      - name: Commit snapshot changes
+        shell: pwsh
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "tests/visual/snapshots.spec.js-snapshots/"
+          $staged = git diff --staged --name-only
+          if ($staged) {
+            $count = ($staged | Measure-Object).Count
+            git commit -m "chore: update visual snapshots ($count files)"
+            git push
+            Write-Host "Committed and pushed $count snapshot file(s)."
+          } else {
+            Write-Host "No snapshot changes to commit."
+          }
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-check-report
+          path: playwright-report/
+          retention-days: 7
