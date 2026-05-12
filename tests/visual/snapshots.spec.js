@@ -161,14 +161,15 @@ const PAGES = [
 // Directories that should never be snapshotted are excluded below.
 
 const _HANDCRAFTED_URLS = new Set(PAGES.map(p => p.url));
-const _EXCLUDE = new Set(['embed', 'forsys-website-new-main', 'node_modules', 'playwright-report', 'test-results', 'assets', 'tests']);
+const _EXCLUDE_DIRS  = new Set(['embed', 'forsys-website-new-main', 'node_modules', 'playwright-report', 'test-results', 'assets', 'tests']);
+const _EXCLUDE_FILES = new Set(['test-suite-report.html']); // generated/dynamic files
 
 function _discoverPages(dir, base = '') {
   const results = [];
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     if (entry.isDirectory()) {
-      if (!_EXCLUDE.has(entry.name)) results.push(..._discoverPages(path.join(dir, entry.name), `${base}${entry.name}/`));
-    } else if (entry.name.endsWith('.html')) {
+      if (!_EXCLUDE_DIRS.has(entry.name)) results.push(..._discoverPages(path.join(dir, entry.name), `${base}${entry.name}/`));
+    } else if (entry.name.endsWith('.html') && !_EXCLUDE_FILES.has(entry.name)) {
       const url = `/${base}${entry.name}`;
       if (!_HANDCRAFTED_URLS.has(url)) {
         const name = url.replace(/^\//, '').replace(/\.html$/, '').replace(/\//g, '--');
